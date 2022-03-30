@@ -1,11 +1,11 @@
 <template>
   <section class="title">
-    <h1>title</h1>
+    <h1>카드 매칭 게임</h1>
     <div class="restart">
       <button
         v-show="!finished"
-        @click="doReset"
-        class="btn btn-primary btn-restart bordered"
+        @click="restart"
+        class="btn btn-primary mt-3 btn-restart bordered"
       >
         <i class="fas fa-flag-checkered"></i>재시작
       </button>
@@ -69,13 +69,53 @@ export default {
         visible: false
       })
     }
+    // this.test()
   },
   methods: {
-    shuffleCards() {
+    startGame() {},
+
+    restart() {
+      let sample = []
+      for (let i = 0; i < 16; i++) {
+        sample.push(i)
+      }
+      let sampleLength = sample.length
+      let curLength = sample.length
+
+      let sampleSet = new Set()
+      let i = 0
+      while (sampleSet.size < sampleLength && i < 100) {
+        i++
+        curLength = sample.length
+        let randIdx = Math.floor(Math.random() * curLength)
+
+        let randVal = sample.splice(randIdx, 1)
+
+        // console.log('randIdx: ', randIdx, ' randVal: ', randVal)
+        console.log('sample: ', sample)
+
+        sampleSet.add(randVal[0])
+      }
+      // console.log('sample: ', sampleSet, sampleSet.size, i)
+      sample = []
+      sampleSet.forEach((s) => {
+        sample.push(s)
+      })
+      // console.log('newSample: ', sample)
+
+      this.shuffleCards(sample)
+    },
+    shuffleCards(sample) {
+      console.log('sample: ', sample)
       // this.cardList = _.shuffle(this.cardList)
-      const temp = this.cardList[1]
-      this.cardList[1] = this.cardList[2]
-      this.cardList[2] = temp
+      const newList = []
+      for (let i = 0; i < sample.length; i++) {
+        newList.push(this.cardList[sample[i]])
+      }
+      // const temp = this.cardList[1]
+      // this.cardList[1] = this.cardList[2]
+      // this.cardList[2] = temp
+      this.cardList = newList
 
       this.cardList = this.cardList.map((card, index) => {
         return {
@@ -85,18 +125,6 @@ export default {
           matched: false
         }
       })
-    },
-    doReset() {
-      this.shuffleCards()
-
-      // console.log(this.cardList[0], this.cardList[1], this.cardList[2])
-      // let list = this.cardList
-      // this.cardList = []
-      // let rand = 2
-      // let pop = list.pop(rand)
-      // console.log(pop)
-      // this.cardList.push(pop)
-      // this.cardList.push(pop)
     },
     async cardClick(position, value) {
       if (this.checking == true) {
@@ -155,9 +183,24 @@ export default {
   /* background: yellow url('/images/page-bg.png') right top fixed; */
   background: rgb(92, 92, 92) url('/images/page-bg.png') right top;
 }
+@font-face {
+  font-family: 'HoengseongHanu';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2202@1.0/HoengseongHanu.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 .title {
   background: #2c3e50;
   padding: 30px 0;
+  font-family: 'HoengseongHanu', sans-serif;
+  text-shadow: rgb(0 0 0) 2px 0px 0px, rgb(0 0 0) 1.75517px 0.95885px 0px,
+    rgb(0 0 0) 1.0806px 1.68294px 0px, rgb(0 0 0) 0.14147px 1.99499px 0px,
+    rgb(0 0 0) -0.83229px 1.81859px 0px, rgb(0 0 0) -1.60229px 1.19694px 0px,
+    rgb(0 0 0) -1.97998px 0.28224px 0px, rgb(0 0 0) -1.87291px -0.70157px 0px,
+    rgb(0 0 0) -1.30729px -1.5136px 0px, rgb(0 0 0) -0.42159px -1.95506px 0px,
+    rgb(0 0 0) 0.56732px -1.91785px 0px, rgb(0 0 0) 1.41734px -1.41108px 0px,
+    rgb(0 0 0) 1.92034px -0.55883px 0px;
 }
 .game-board {
   display: grid;

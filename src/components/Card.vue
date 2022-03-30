@@ -1,5 +1,5 @@
 <template>
-  <div class="card" :class="{ 'is-flipped': !visible }" @click="selectCard">
+  <div class="card" :class="{ 'is-flipped': visible }" @click="selectCard">
     <div class="card-face is-front">
       <img :src="`/images/${value}.png`" :alt="value" />
       <div class="position">{{ variant }}</div>
@@ -92,7 +92,7 @@ export default {
 .card-face.is-front {
   background-image: url('/images/card-bg.png');
   color: #fff;
-  /* transform: rotateY(180deg); */
+  transform: rotateY(180deg);
 }
 .card-face.is-front img {
   width: 100%;
@@ -104,7 +104,7 @@ export default {
   background-image: url('/images/card-back-Cthun.png');
   background-position: center center;
   background-repeat: no-repeat;
-  transform: rotateY(180deg);
+  transform: rotateY(0deg);
   background-size: contain;
 }
 .card.is-flipped {
