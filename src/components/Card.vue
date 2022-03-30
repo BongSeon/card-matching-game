@@ -2,11 +2,14 @@
   <div class="card" :class="{ 'is-flipped': !visible }" @click="selectCard">
     <div class="card-face is-front">
       <img :src="`/images/${value}.png`" :alt="value" />
-      <img v-if="matched" src="/images/checkmark.svg" alt="" />
-      <div>{{ position }} - {{ value }}</div>
-      <div v-if="matched">{{ matched }}</div>
+      <div class="position">{{ variant }}</div>
+      <div class="matched-mark" v-if="matched">
+        <i class="fas fa-check-square"></i>
+      </div>
     </div>
-    <div class="card-face is-back">back</div>
+    <div class="card-face is-back">
+      <div class="position">{{ position }}</div>
+    </div>
   </div>
 </template>
 
@@ -15,6 +18,10 @@ export default {
   props: {
     value: {
       type: String,
+      required: true
+    },
+    variant: {
+      type: Number,
       required: true
     },
     position: {
@@ -48,17 +55,28 @@ export default {
       if (!this.visible) {
         this.$emit('select-card', this.position, this.value)
       }
-    }
+    },
+    reset() {}
   }
 }
 </script>
 
 <style scoped>
+.position {
+  position: absolute;
+  font-size: 2rem;
+  font-weight: bold;
+  left: 10px;
+  top: 0;
+}
 .card {
   cursor: pointer;
   position: relative;
   transition: transform 0.5s ease-in;
   transform-style: preserve-3d;
+  background-color: transparent;
+  border: 2px solid #2c3e50;
+  border-radius: 10px;
 }
 .card-face {
   width: 100%;
@@ -76,11 +94,27 @@ export default {
   color: #fff;
   /* transform: rotateY(180deg); */
 }
+.card-face.is-front img {
+  width: 100%;
+  border-radius: 10px;
+  color: #fff;
+  /* transform: rotateY(180deg); */
+}
 .card-face.is-back {
-  background-color: rgb(140, 197, 207);
+  background-image: url('/images/card-back-Cthun.png');
+  background-position: center center;
+  background-repeat: no-repeat;
   transform: rotateY(180deg);
+  background-size: contain;
 }
 .card.is-flipped {
   transform: rotateY(180deg);
+}
+.matched-mark {
+  position: absolute;
+  font-size: 24px;
+  color: gold;
+  right: 10px;
+  bottom: 4px;
 }
 </style>
