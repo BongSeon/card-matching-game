@@ -2,13 +2,13 @@
   <div class="card" :class="{ 'is-flipped': visible }" @click="selectCard">
     <div class="card-face is-front">
       <img :src="`/images/${value}.png`" :alt="value" />
-      <div class="position">{{ variant }}</div>
+      <!-- <div class="position">{{ variant }}</div> -->
       <div class="matched-mark" v-if="matched">
         <i class="fas fa-check-square"></i>
       </div>
     </div>
     <div class="card-face is-back">
-      <div class="position">{{ position }}</div>
+      <!-- <div class="position">{{ position }}</div> -->
     </div>
   </div>
 </template>

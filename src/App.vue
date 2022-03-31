@@ -1,10 +1,17 @@
 <template>
   <section class="title">
     <h1>카드 매칭 게임</h1>
-    <div class="restart">
+    <div class="buttons">
       <button
         v-show="!finished"
-        @click="restart"
+        @click="startGame"
+        class="btn btn-primary mt-3 btn-restart bordered"
+      >
+        <i class="fas fa-flag-checkered"></i>게임 시작
+      </button>
+      <button
+        v-show="finished"
+        @click="restartGame"
         class="btn btn-primary mt-3 btn-restart bordered"
       >
         <i class="fas fa-flag-checkered"></i>재시작
@@ -23,16 +30,17 @@
       @select-card="cardClick"
     />
   </transition-group>
-  <div>
+  <!-- <div>
     <h3>selPos</h3>
     {{ selPos }}
     <h3>selVal</h3>
     {{ selVal }}
-  </div>
+  </div> -->
 </template>
 
 <script>
 import Card from './components/Card.vue'
+const itemCnt = 16
 const cardItems = [
   'arana',
   'azmodan',
@@ -58,59 +66,68 @@ export default {
     }
   },
   created() {
-    for (let i = 0; i < 16; i++) {
+    for (let i = 0; i < itemCnt; i++) {
       const value = cardItems[parseInt(i / 2)]
       const variant = i % 2 === 0 ? 1 : 2
+      const visible = i % 2 === 0 ? false : true
       this.cardList.push({
         value: value,
         variant: variant,
         position: i,
         matched: false,
-        visible: false
+        visible: visible
       })
     }
     // this.test()
   },
   methods: {
-    startGame() {},
-
-    restart() {
+    startGame() {
+      const shuffled = this.createRandomNumbers(itemCnt)
+      this.shuffleCards(shuffled)
+    },
+    restartGame() {
+      this.finished = false
+      this.startGame()
+    },
+    createRandomNumbers(count) {
       let sample = []
-      for (let i = 0; i < 16; i++) {
+      for (let i = 0; i < itemCnt; i++) {
         sample.push(i)
       }
-      let sampleLength = sample.length
+      // sample : [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+
       let curLength = sample.length
 
-      let sampleSet = new Set()
+      let shuffledSet = new Set() // [13, 4, 6, 1, 0, ...]
       let i = 0
-      while (sampleSet.size < sampleLength && i < 100) {
+
+      // shuffledSet 의 크기가 itemCnt(16)이 될때까지 반복한다.
+      while (shuffledSet.size < itemCnt) {
+        // 무작위 인덱스 하나를 생성해서 그 인덱스에 해당하는 item을
+        // sample에서 제거하고 shuffledSet에 추가한다
         i++
         curLength = sample.length
         let randIdx = Math.floor(Math.random() * curLength)
+        // console.log('sample: ', sample)
 
         let randVal = sample.splice(randIdx, 1)
 
-        // console.log('randIdx: ', randIdx, ' randVal: ', randVal)
-        console.log('sample: ', sample)
-
-        sampleSet.add(randVal[0])
+        shuffledSet.add(randVal[0])
       }
-      // console.log('sample: ', sampleSet, sampleSet.size, i)
-      sample = []
-      sampleSet.forEach((s) => {
-        sample.push(s)
-      })
-      // console.log('newSample: ', sample)
 
-      this.shuffleCards(sample)
+      let shuffled = []
+      shuffledSet.forEach((s) => {
+        shuffled.push(s)
+      })
+
+      return shuffled
     },
-    shuffleCards(sample) {
-      console.log('sample: ', sample)
-      // this.cardList = _.shuffle(this.cardList)
+    // shuffled 의 순서대로 ex. [ 13, 4, 6, 1, 0, ... ]
+    // this.cardList의 순서를 재배열
+    shuffleCards(shuffled) {
       const newList = []
-      for (let i = 0; i < sample.length; i++) {
-        newList.push(this.cardList[sample[i]])
+      for (let i = 0; i < shuffled.length; i++) {
+        newList.push(this.cardList[shuffled[i]])
       }
       // const temp = this.cardList[1]
       // this.cardList[1] = this.cardList[2]
@@ -211,7 +228,7 @@ export default {
   justify-content: center;
   padding: 30px 0;
 }
-.restart {
+.buttons {
   height: 40px;
   margin-bottom: 20px;
 }
