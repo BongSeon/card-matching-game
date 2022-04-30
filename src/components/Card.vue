@@ -42,6 +42,16 @@ export default {
   },
   methods: {
     selectCard() {
+      if (this.$store.state.gameStatus !== 1) {
+        console.log('먼저 게임을 시작해주세요.')
+        return
+      }
+      if (!this.visible) {
+        this.$emit('select-card', this.position, this.value)
+      }
+    },
+    reset() {},
+    test() {
       // console.log(
       //   'val;',
       //   this.value,
@@ -52,11 +62,7 @@ export default {
       //   'visible;',
       //   this.visible
       // )
-      if (!this.visible) {
-        this.$emit('select-card', this.position, this.value)
-      }
-    },
-    reset() {}
+    }
   }
 }
 </script>
@@ -72,7 +78,7 @@ export default {
 .card {
   cursor: pointer;
   position: relative;
-  transition: transform 0.5s ease-in;
+  transition: transform 0.5s ease-in-out;
   transform-style: preserve-3d;
   background-color: transparent;
   border: 2px solid #2c3e50;

@@ -1,19 +1,28 @@
-# card-matching-game
+# 카드 매칭 미니게임!(card-matching-game)
 
-## Project setup
-```
-npm install
-```
+[스크린샷]
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+### 소개
 
-### Compiles and minifies for production
-```
-npm run build
-```
+vue transition 과 상태관리, 게임 알고리즘을 익히기 위한
+개인 프로젝트입니다.
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### 들어간 기능
+
+1. vue transition을 이용한 카드 shuffle effect
+2. 게임 상태 관리 (시작, 맞은카드 개수,종료)
+3.
+
+### todo
+
+- 카드 셔플중이거나 시작 대기중일때 카드 클릭안되게
+- 게임종료 판단
+- 게임종료시에만 리스타트 가능
+- 클리어시간 (표시:옵션) 및 계산(종료시)
+- 클리어시에 modal창 rank_create
+- 랭크 디비에 저장 (닉네임, 메시지 기록)
+- 랭크 확인 버튼누르면 나올 modal창
+- 랭크 불러옴 (랭크 ?위까지 표시)
+- 클리어시 이펙트(파티클같은)
+- 클리어시 두번째 이미지 셋트로 변경 6x6?
+- 두번째 게임 랭킹은 디비에 따로 관리
