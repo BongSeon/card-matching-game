@@ -1,46 +1,48 @@
 <template>
-  <section class="title">
-    <h1>카드 매칭 게임</h1>
-    <div class="buttons">
-      <button
-        v-show="!$store.state.gameStatus"
-        @click="startGame"
-        class="btn btn-primary mt-3 btn-restart bordered"
-      >
-        <i class="fas fa-flag-checkered"></i>게임 시작
-      </button>
-      <button
-        v-show="$store.state.gameStatus"
-        @click="restartGame"
-        class="btn btn-primary mt-3 btn-restart bordered"
-      >
-        <i class="fas fa-flag-checkered"></i>재시작
-      </button>
-    </div>
-  </section>
-  <transition-group tag="section" class="game-board" name="shuffle-card">
-    <Card
-      v-for="card in cardList"
-      :key="`${card.value}-${card.variant}`"
-      :value="card.value"
-      :variant="card.variant"
-      :position="card.position"
-      :matched="card.matched"
-      :visible="card.visible"
-      @select-card="cardClick"
-    />
-  </transition-group>
-  <!-- <div>
+  <div id="app">
+    <section class="title">
+      <h1>카드 매칭 게임</h1>
+      <div class="buttons">
+        <v-btn
+          :loading="loading"
+          :disabled="loading"
+          color="blue-grey"
+          class="ma-2 white--text"
+          @click="startGame"
+        >
+          {{ $store.state.gameStatus === 0 ? '게임 시작' : '재시작' }}
+          <!-- <i class="fas fa-flag-checkered"></i> -->
+          <v-icon v-if="$store.state.gameStatus === 0" right dark>
+            mdi-send
+          </v-icon>
+          <v-icon v-else right dark> mdi-refresh </v-icon>
+        </v-btn>
+      </div>
+    </section>
+    <transition-group tag="section" class="game-board" name="shuffle-card">
+      <Card
+        v-for="card in cardList"
+        :key="`${card.value}-${card.variant}`"
+        :value="card.value"
+        :variant="card.variant"
+        :position="card.position"
+        :matched="card.matched"
+        :visible="card.visible"
+        @select-card="cardClick"
+      />
+    </transition-group>
+    <!-- <div>
     <h3>selPos</h3>
     {{ selPos }}
     <h3>selVal</h3>
     {{ selVal }}
   </div> -->
-  <p>
-    스테이지: {{ $store.getters['stage'] }}, gameStatus:
-    {{ $store.getters['gameStatus'] }}
-  </p>
-  <p>matched: {{ matched }}</p>
+    <p>
+      스테이지: {{ $store.getters['stage'] }}, gameStatus:
+      {{ $store.getters['gameStatus'] }}
+    </p>
+    <p>matched: {{ matched }}</p>
+  </div>
 </template>
 
 <script>

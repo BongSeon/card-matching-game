@@ -1,11 +1,12 @@
-import { createStore } from 'vuex'
+import Vue from 'vue'
+import Vuex from 'vuex'
 
-export default createStore({
-  state: () => {
-    return {
-      stage: 1,
-      gameStatus: 0 // ready: 0 , game-started: 1, gameover: 2
-    }
+Vue.use(Vuex)
+
+export default new Vuex.Store({
+  state: {
+    stage: 1,
+    gameStatus: 0 // ready: 0 , game-started: 1, gameover: 2
   },
   getters: {
     stage(state) {
